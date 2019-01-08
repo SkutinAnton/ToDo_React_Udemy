@@ -3,8 +3,7 @@ import './todo-list-item.css';
 
 const ToDoListItem = ({ label, important }) => {
   const style = {
-    color: important ? 'steelblue' : 'black',
-    fontWeight: important ? 'bold' : 'normal'
+    color: important ? 'lightslategrey' : 'black',
   };
 
   return (
