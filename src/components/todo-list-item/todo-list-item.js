@@ -10,15 +10,19 @@ export default class ToDoListItem extends Component {
   };
 
   onLabelClick = () => {
-    this.setState({
-      done: !this.state.done,
-    })
+    this.setState((state) => {
+      return {
+        done: !state.done,
+      }
+    });
   };
 
   onMarkImportant = () => {
-    this.setState({
-      important: !this.state.important,
-    })
+    this.setState((state) => {
+      return {
+        important: !state.important,
+      }
+    });
   }
 
   render() {
@@ -34,7 +38,7 @@ export default class ToDoListItem extends Component {
           {this.props.label}
         </span>
   
-        <button type="button" className="btn btn-outline-danger btn-sm float-right">
+        <button type="button" className="btn btn-outline-danger btn-sm float-right" onClick={this.props.onDeleted}>
           <i className="fa fa-trash-o" />
         </button>
   
