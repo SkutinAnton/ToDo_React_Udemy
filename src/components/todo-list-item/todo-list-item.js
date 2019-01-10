@@ -4,37 +4,16 @@ import classNames from 'classnames';
 
 export default class ToDoListItem extends Component {
 
-  state = {
-    done: false,
-    important: false
-  };
-
-  onLabelClick = () => {
-    this.setState((state) => {
-      return {
-        done: !state.done,
-      }
-    });
-  };
-
-  onMarkImportant = () => {
-    this.setState((state) => {
-      return {
-        important: !state.important,
-      }
-    });
-  }
-
   render() {
     const classes = classNames({
       'todo-list-item': true, 
-      done: this.state.done, 
-      important: this.state.important
+      done: this.props.done, 
+      important: this.props.important
     })
   
     return (
       <span className={classes}>
-        <span className="todo-list-item-label" onClick={this.onLabelClick}>
+        <span className="todo-list-item-label" onClick={this.props.onToggleDone}>
           {this.props.label}
         </span>
   
@@ -42,7 +21,7 @@ export default class ToDoListItem extends Component {
           <i className="fa fa-trash-o" />
         </button>
   
-        <button type="button" className="btn btn-outline-success btn-sm float-right" onClick={this.onMarkImportant}>
+        <button type="button" className="btn btn-outline-success btn-sm float-right" onClick={this.props.onToggleImportant}>
           <i className="fa fa-exclamation" />
         </button>
       </span>
