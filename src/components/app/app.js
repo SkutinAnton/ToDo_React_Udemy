@@ -18,6 +18,7 @@ export default class App extends Component {
       this.createToDoItem('Drink Tea'),
       this.createToDoItem('Eat Something'),
     ],
+    searchText: ''
   };
 
   createToDoItem(label) {
@@ -57,7 +58,7 @@ export default class App extends Component {
 
         return el;
       });
-      
+
       return {
         todoData: filterTodoData,
       }
@@ -73,20 +74,33 @@ export default class App extends Component {
     });
   };
 
+  searchTodo(items, text) {
+    if (text.length === 0) {
+      return items;
+    }
+    
+    return items.filter((item) => item.label.toLowerCase().includes(text.toLowerCase()));
+  }
+
+  setSearchText = (searchText) => {
+    this.setState({ searchText });
+  }
+
   render() {
 
     const doneCount = this.state.todoData.filter((el) => el.done).length;
     const todoCount = this.state.todoData.length - doneCount;
+    const visibleItems = this.searchTodo(this.state.todoData, this.state.searchText);
 
     return (
       <div className="todo-app">
         <AppHeader todo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
-          <SearchPanel />
+          <SearchPanel onSearch={this.setSearchText} />
           <ItemStatusFilter />
         </div>
         <ToDoList
-          todos={this.state.todoData}
+          todos={visibleItems}
           onDeleted={this.deleteItem}
           onToggleDone={this.onToggleDone}
           onToggleImportant={this.onToggleImportant}
