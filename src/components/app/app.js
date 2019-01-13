@@ -18,7 +18,8 @@ export default class App extends Component {
       this.createToDoItem('Drink Tea'),
       this.createToDoItem('Eat Something'),
     ],
-    searchText: ''
+    searchText: '',
+    statusTodo: 'all'
   };
 
   createToDoItem(label) {
@@ -74,30 +75,43 @@ export default class App extends Component {
     });
   };
 
-  searchTodo(items, text) {
+  setTodo(items, text) {
     if (text.length === 0) {
-      return items;
-    }
-    
-    return items.filter((item) => item.label.toLowerCase().includes(text.toLowerCase()));
+      if (this.state.statusTodo === 'all') {
+        return items;
+      } else {
+        return items.filter((item) => this.state.statusTodo === 'done' ? item.done : !item.done);
+      }
+    } else {
+      const filterList = items.filter((item) => item.label.toLowerCase().includes(text.toLowerCase()));
+      if (this.state.statusTodo === 'all') {
+        return filterList;
+      } else {
+        return filterList.filter((item) => this.state.statusTodo === 'done' ? item.done : !item.done);
+      }
+    }    
   }
 
   setSearchText = (searchText) => {
     this.setState({ searchText });
   }
 
+  setStatusTodo = (statusTodo) => {
+    this.setState({ statusTodo });
+  }
+
   render() {
 
     const doneCount = this.state.todoData.filter((el) => el.done).length;
     const todoCount = this.state.todoData.length - doneCount;
-    const visibleItems = this.searchTodo(this.state.todoData, this.state.searchText);
+    const visibleItems = this.setTodo(this.state.todoData, this.state.searchText);
 
     return (
       <div className="todo-app">
         <AppHeader todo={todoCount} done={doneCount} />
         <div className="top-panel d-flex">
           <SearchPanel onSearch={this.setSearchText} />
-          <ItemStatusFilter />
+          <ItemStatusFilter onChangeStatus={this.setStatusTodo} />
         </div>
         <ToDoList
           todos={visibleItems}
